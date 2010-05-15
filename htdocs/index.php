@@ -12,6 +12,7 @@ require_once(dirname(__FILE__).'/../config/config.php');
 require_once('Symfony/event_dispatcher/sfEvent.php');
 require_once('Symfony/event_dispatcher/sfEventDispatcher.php');
 require_once('Symfony/sfParameterHolder.class.php');
+require_once('Symfony/sfToolkit.class.php');
 require_once('Symfony/request/sfRequest.class.php');
 require_once('Symfony/request/sfWebRequest.class.php');
 require_once('Symfony/response/sfResponse.class.php');
