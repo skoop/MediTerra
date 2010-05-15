@@ -10,12 +10,13 @@ abstract class BaseController
    *
    * @param sfEventDispatcher $dispatcher
    * @param sfWebRequest $request
+   * @param array $config
    * @return string
    */
-  public function execute(sfEventDispatcher $dispatcher, sfWebRequest $request)
+  public function execute(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
     $method = $this->getMethod($request->getParameter('action'));
-    return $this->$method($dispatcher, $request);
+    return $this->$method($dispatcher, $request, $config);
   }
 
   /**

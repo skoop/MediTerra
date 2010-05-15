@@ -11,7 +11,8 @@ Interface ControllerInterface
    * @abstract
    * @param sfEventDispatcher $dispatcher
    * @param sfWebRequest $request
+   * @param array $config
    * @return string
    */
-  public function execute(sfEventDispatcher $dispatcher, sfWebRequest $request);
+  public function execute(sfEventDispatcher $dispatcher, sfWebRequest $request, $config);
 }

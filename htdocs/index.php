@@ -34,7 +34,7 @@ if (empty($controller_name) || !in_array($controller_name, array('BlobController
 require_once(dirname(__FILE__).'/../controllers/'.$controller_name.'.php');
 
 $controller = new $controller_name();
-$content = $controller->execute($dispatcher, $request);
+$content = $controller->execute($dispatcher, $request, $config);
 
 // get the template path
 $template_file = MediTerraOutput::getTemplatePath($config['template']);
