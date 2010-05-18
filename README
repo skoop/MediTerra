@@ -14,3 +14,5 @@ MediTerra uses external libraries to ensure the wheel isn't reinvented.
 For interfacing with Azure Storage, MediTerra uses the PHPAzure library (http://phpazure.codeplex.com/). This library has a specific license, which can be found in lib/vendor/PHPAZURE-LICENSE.txt
 
 For request and response handling as well as event dispatching, MediTerra uses the libraries of symfony 1.4. These libraries are also released under the MIT license (like MediTerra) but a seperate lib/vendor/SYMFONY-LICENSE.txt has been included for clarity.
+
+For templating, MediTerra uses the Twig library (http://www.twig-project.org/). The license for Twig can be found in lib/vendor/TWIG-LICENSE.txt.
