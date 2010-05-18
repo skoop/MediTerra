@@ -17,9 +17,13 @@ require_once('Symfony/request/sfRequest.class.php');
 require_once('Symfony/request/sfWebRequest.class.php');
 require_once('Symfony/response/sfResponse.class.php');
 require_once('Symfony/response/sfWebResponse.class.php');
+require_once('Twig/Autoloader.php');
 require_once('interfaces/ControllerInterface.php');
 require_once('controllers/BaseController.php');
 require_once('output/MediTerraOutput.php');
+
+// initialize Twig autoloader
+Twig_Autoloader::register();
 
 // initialize dispatcher
 $dispatcher = new sfEventDispatcher();
