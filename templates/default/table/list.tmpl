@@ -1,0 +1,13 @@
+{{ tablecount }} tables currently present (<a href="/?controller=TableController&action=create">create table</a>)<br />
+<br />
+<table>
+  <tr>
+    <th>Table</th>
+  </tr>
+  {% for table in tables %}
+    <tr>
+      <td>{{ table.name }}</td>
+      <td><form method="post" action="/?controller=TableController&action=delete"><input type="hidden" name="table" value="{{ table.name }}" /><input type="submit" name="submit" value="Delete table" /></form></td>
+    </tr>
+  {% endfor %}
+</table>
