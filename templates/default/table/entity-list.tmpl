@@ -1,0 +1,17 @@
+{{ entitycount }} entities in table {{ table }}<br />
+<br />
+<table>
+  <tr>
+    <th>Timestamp</th>
+    <th>Partition</th>
+    <th>Row</th>
+  </tr>
+  {% for entity in entities %}
+    <tr>
+      <td>{{ entity.timestamp }}</td>
+      <td>{{ entity.partitionid }}</td>
+      <td>{{ entity.rowid }}</td>
+      <td><form method="post" action="/?controller=TableController&action=deleteentity"><input type="hidden" name="table" value="{{ table }}" /><input type="hidden" name="partition" value="{{ entity.partitionid }} " /><input type="hidden" name="row" value="{{ entity.rowid }}" /><input type="submit" name="submit" value="Delete entity" /></form></td>
+    </tr>
+  {% endfor %}
+</table>

@@ -98,6 +98,25 @@ class TableController extends BaseController implements ControllerInterface
     return $content;
   }
 
+  public function executeEntitylist(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $twig = $this->getTwig($config);
+    $template = $twig->loadTemplate('entity-list.tmpl');
+    
+    $table_object = $this->getTableObject($config);
+    $result = $table_object->retrieveEntities($request->getParameter('table'));
+
+    $entities = array();
+    foreach($result as $entity)
+    {
+      $entities[] = array('timestamp' => date('d-m-Y G:i', strtotime($entity->getTimestamp())), 'partitionid' => $entity->getPartitionKey(), 'rowid' => $entity->getRowKey());
+    }
+
+    $content = $template->render(array('entities' => $entities, 'entitycount' => count($entities), 'table' => $request->getParameter('table')));
+
+    return $content;
+  }
+
   /**
    * Instantiate a new table object with the passed configuration
    *
@@ -120,4 +139,8 @@ class TableController extends BaseController implements ControllerInterface
     $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/../templates/'.$config['template'].'/table');
     return new Twig_Environment($loader, array('cache' => false));
   }
+}
+
+class MediTerraEntity extends Microsoft_WindowsAzure_Storage_TableEntity
+{
 }
