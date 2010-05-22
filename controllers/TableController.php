@@ -1,6 +1,7 @@
 <?php
 
 require_once('Microsoft/WindowsAzure/Storage/Table.php');
+require_once('table/MediTerraEntity.php');
 
 /**
  * Controller for the Azure Table Storage
@@ -98,6 +99,14 @@ class TableController extends BaseController implements ControllerInterface
     return $content;
   }
 
+  /**
+   * List the entities in the table
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
   public function executeEntitylist(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
     $twig = $this->getTwig($config);
@@ -115,6 +124,27 @@ class TableController extends BaseController implements ControllerInterface
     $content = $template->render(array('entities' => $entities, 'entitycount' => count($entities), 'table' => $request->getParameter('table')));
 
     return $content;
+  }
+
+  /**
+   * Process the deletion of an entity from a table
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
+  public function executeEntitydelete(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $twig = $this->getTwig($config);
+    $template = $twig->loadTemplate('entitydelete-success.tmpl');
+
+    $table_object = $this->getTableObject($config);
+
+    $entity = $table_object->retrieveEntityById($request->getParameter('table'), $request->getParameter('partition'), $request->getParameter('row'), 'Microsoft_WindowsAzure_Storage_DynamicTableEntity');
+    $table_object->deleteEntity($request->getParameter('table'), $entity);
+
+    return $template->render(array('table' => $request->getParameter('table')));
   }
 
   /**
@@ -139,8 +169,4 @@ class TableController extends BaseController implements ControllerInterface
     $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/../templates/'.$config['template'].'/table');
     return new Twig_Environment($loader, array('cache' => false));
   }
-}
-
-class MediTerraEntity extends Microsoft_WindowsAzure_Storage_TableEntity
-{
 }
