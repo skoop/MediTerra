@@ -38,4 +38,17 @@ abstract class BaseController
     }
     return 'executeIndex';
   }
+
+  /**
+   * Get a new instance of Twig
+   *
+   * @param array $config
+   * @param string $controller
+   * @return Twig_Environment
+   */
+  protected function getTwig($config, $controller)
+  {
+    $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/../templates/'.$config['template'].'/'.$controller);
+    return new Twig_Environment($loader, array('cache' => false));
+  }
 }

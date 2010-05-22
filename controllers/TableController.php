@@ -1,7 +1,6 @@
 <?php
 
 require_once('Microsoft/WindowsAzure/Storage/Table.php');
-require_once('table/MediTerraEntity.php');
 
 /**
  * Controller for the Azure Table Storage
@@ -18,7 +17,7 @@ class TableController extends BaseController implements ControllerInterface
    */
   public function executeIndex(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
-    $twig = $this->getTwig($config);
+    $twig = $this->getTwig($config, 'table');
     $template = $twig->loadTemplate('list.tmpl');
     $table_object = $this->getTableObject($config);
     $result = $table_object->listTables();
@@ -42,7 +41,7 @@ class TableController extends BaseController implements ControllerInterface
    */
   public function executeCreate(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
-    $twig = $this->getTwig($config);
+    $twig = $this->getTwig($config, 'table');
     $table_object = $this->getTableObject($config);
     $content = '';
     if ($request->getMethod() == sfWebRequest::POST)
@@ -81,7 +80,7 @@ class TableController extends BaseController implements ControllerInterface
    */
   public function executeDelete(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
-    $twig = $this->getTwig($config);
+    $twig = $this->getTwig($config, 'table');
     if ($request->getMethod() == sfWebRequest::POST)
     {
       $table_object = $this->getTableObject($config);
@@ -109,7 +108,7 @@ class TableController extends BaseController implements ControllerInterface
    */
   public function executeEntitylist(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
-    $twig = $this->getTwig($config);
+    $twig = $this->getTwig($config, 'table');
     $template = $twig->loadTemplate('entity-list.tmpl');
     
     $table_object = $this->getTableObject($config);
@@ -136,7 +135,7 @@ class TableController extends BaseController implements ControllerInterface
    */
   public function executeEntitydelete(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
-    $twig = $this->getTwig($config);
+    $twig = $this->getTwig($config, 'table');
     $template = $twig->loadTemplate('entitydelete-success.tmpl');
 
     $table_object = $this->getTableObject($config);
@@ -155,18 +154,6 @@ class TableController extends BaseController implements ControllerInterface
    */
   protected function getTableObject($config)
   {
-    return new Microsoft_WindowsAzure_Storage_Table($config['sqlazure_server'], $config['sqlazure_user'], $config['sqlazure_pass']);
-  }
-
-  /**
-   * Get a new instance of Twig
-   * 
-   * @param array $config
-   * @return Twig_Environment
-   */
-  protected function getTwig($config)
-  {
-    $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/../templates/'.$config['template'].'/table');
-    return new Twig_Environment($loader, array('cache' => false));
+    return new Microsoft_WindowsAzure_Storage_Table($config['sqlazure_table_server'], $config['sqlazure_user'], $config['sqlazure_pass']);
   }
 }
