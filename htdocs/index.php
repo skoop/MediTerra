@@ -9,6 +9,7 @@ set_include_path(dirname(__FILE__).'/../lib'.PATH_SEPARATOR.dirname(__FILE__).'/
 require_once(dirname(__FILE__).'/../config/config.php');
 
 // include classes that are always used
+require_once('Symfony/sfException.class.php');
 require_once('Symfony/event_dispatcher/sfEvent.php');
 require_once('Symfony/event_dispatcher/sfEventDispatcher.php');
 require_once('Symfony/sfParameterHolder.class.php');
