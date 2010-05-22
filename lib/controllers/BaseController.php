@@ -48,7 +48,7 @@ abstract class BaseController
    */
   protected function getTwig($config, $controller)
   {
-    $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/../templates/'.$config['template'].'/'.$controller);
+    $loader = new Twig_Loader_Filesystem(dirname(__FILE__).'/../../templates/'.$config['template'].'/'.$controller);
     return new Twig_Environment($loader, array('cache' => false));
   }
 }
