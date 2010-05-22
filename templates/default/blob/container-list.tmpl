@@ -7,8 +7,8 @@
   {% for container in containers %}
     <tr>
       <td>{{ container.name }}</td>
-      <td><a href="/?controller=ContainerController&action=bloblist&container={{ container.name }}">List blobs</a></td>
-      <td><form method="post" action="/?controller=ContainerController&action=delete"><input type="hidden" name="container" value="{{ container.name }}" /><input type="submit" name="submit" value="Delete container" /></form></td>
+      <td><a href="/?controller=BlobController&action=bloblist&container={{ container.name }}">List blobs</a></td>
+      <td><form method="post" action="/?controller=BlobController&action=deletecontainer"><input type="hidden" name="container" value="{{ container.name }}" /><input type="submit" name="submit" value="Delete container" /></form></td>
     </tr>
   {% endfor %}
 </table>

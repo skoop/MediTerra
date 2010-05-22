@@ -31,6 +31,14 @@ class BlobController extends BaseController implements ControllerInterface
     return $template->render(array('containercount' => count($containers), 'containers' => $containers));
   }
 
+  /**
+   * Show creation form for container and handle submission of the form
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
   public function executeCreatecontainer(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
     $blob_object = $this->getBlobObject($config);
@@ -56,6 +64,26 @@ class BlobController extends BaseController implements ControllerInterface
 
       return $template->render(array());
     }
+  }
+
+  /**
+   * Delete the selected container
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
+  public function executeDeletecontainer(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $blob_object = $this->getBlobObject($config);
+
+    $twig = $this->getTwig($config, 'blob');
+    $template = $twig->loadTemplate('delete-container-success.tmpl');
+
+    $blob_object->deleteContainer($request->getParameter('container'));
+
+    return $template->render(array('container' => $request->getParameter('container')));
   }
 
   /**
