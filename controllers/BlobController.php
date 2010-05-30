@@ -168,6 +168,18 @@ class BlobController extends BaseController implements ControllerInterface
     return null;
   }
 
+  public function executeDeleteblob(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $blob_object = $this->getBlobObject($config);
+
+    $twig = $this->getTwig($config, 'blob');
+    $template = $twig->loadTemplate('deleteblob-success.tmpl');
+
+    $blob_object->deleteBlob($request->getParameter('container'), $request->getParameter('blob'));
+
+    return $template->render(array('blob' => $request->getParameter('blob'), 'container' => $request->getParameter('container')));
+  }
+
   /**
    * Get the blog object to be used
    *
