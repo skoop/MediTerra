@@ -128,7 +128,7 @@ class BlobController extends BaseController implements ControllerInterface
 
     if ($request->getMethod() == sfWebRequest::POST)
     {
-      $blob_object->putBlob($request->getParameter('container'), $request->getParameter('blobname'), $_FILES['blobfile']['tmp_name']);
+      $blob_object->putBlob($request->getParameter('container'), $_FILES['blobfile']['name'], $_FILES['blobfile']['tmp_name']);
 
       $template = $twig->loadTemplate('createblob-success.tmpl');
 
@@ -142,6 +142,30 @@ class BlobController extends BaseController implements ControllerInterface
     }
 
     return $content;
+  }
+
+  /**
+   * Handle the download of a blob
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return
+   */
+  public function executeBlobdownload(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $blob_object = $this->getBlobObject($config);
+
+    $tmpfile = tempnam(sys_get_temp_dir(), 'MTD_');
+    $blob_object->getBlob($request->getParameter('container'), $request->getParameter('blob'), $tmpfile);
+
+    header('Content-Disposition: attachment; filename='.$request->getParameter('blob'));
+    header('Content-Type: application/octet-stream');
+
+    readfile($tmpfile);
+    unlink($tmpfile);
+    
+    return null;
   }
 
   /**
