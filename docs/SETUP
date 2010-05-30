@@ -1,0 +1,37 @@
+Setting up MediTerra on your local system
+-----------------------------------------
+
+To set up MediTerra on your system, there are two main steps you need to take:
+
+(1) Change the configuration to add your Azure information
+(2) Configure your webserver to serve MediTerra
+
+Configuration
+-------------
+
+To change the configuration for your specific Azure account, you need to edit the config.php file in the config directory of your MediTerra installation. There is a PHP array in that file with some entries that need to be changed:
+
+- template: This is the template to use. 'default' is the default, and the only template in MediTerra at this point
+- sqlazure_table_server: The server to be used for connecting to your Azure Table storage (for instance: table.core.windows.net)
+- sqlazure_blob_server: The server to be used for connecting to your Azure Blob storage (for instance: blob.core.windows.net)
+- sqlazure_queue_server: The server to be used for connecting to your Azure Queue storage (for instance: queue.core.windows.net)
+- sqlazure_user: The username for your Azure services
+- sqlazure_pass: This is the key for your Azure services
+
+The Webserver
+-------------
+
+Your webserver needs to be configured to serve MediTerra. MediTerra at this point is only built to be run at the root of a hostname, not in a subdirectory. So you need to set up your webserver to serve the files from the htdocs/ directory in your MediTerra installation directory from the root of a hostname. For instance if you have a new hostname http://mediterra/ you need to set the document root for this hostname in your webserver to [MediTerra directory]/htdocs. Make sure that your server serves PHP files parsed by PHP, and has index.php as the default directory index.
+
+A Note On Security
+------------------
+
+A note on security: At this point MediTerra does not contain any form of authentication. This means that if you set up MediTerra to be served on a public webserver, you open up your Azure Storage to the whole world. You can configure your webserver to ask for a username/password, but since MediTerra is mostly meant as a development/maintainance tool, I suggest you install it on a local machine instead.
+
+System Requirements
+-------------------
+
+- A webserver
+- PHP 5.2+ (not tested on lower versions, won't work on PHP4)
+
+There is no immediate requirement for any operating system, but so far it has only been tested on Windows (Server 2008), IIS and PHP 5.2.13 (using the Web Platform Installer)
