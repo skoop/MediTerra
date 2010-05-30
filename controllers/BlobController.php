@@ -87,8 +87,67 @@ class BlobController extends BaseController implements ControllerInterface
   }
 
   /**
-   * 
-   * @param  $config
+   * Show a list of all blobs in the chosen container
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
+  public function executeBloblist(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $blob_object = $this->getBlobObject($config);
+
+    $twig = $this->getTwig($config, 'blob');
+    $template = $twig->loadTemplate('bloblist.tmpl');
+
+    $blobs = array();
+    $bloblist = $blob_object->listBlobs($request->getParameter('container'));
+
+    foreach($bloblist as $blob)
+    {
+      $blobs[] = array('name' => $blob->Name, 'contenttype' => $blob->ContentType);
+    }
+
+    return $template->render(array('blobcount' => count($blobs), 'blobs' => $blobs, 'container' => $request->getParameter('container')));
+  }
+
+  /**
+   * Show and handle blob creation form
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return void
+   */
+  public function executeCreateblob(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $blob_object = $this->getBlobObject($config);
+
+    $twig = $this->getTwig($config, 'blob');
+
+    if ($request->getMethod() == sfWebRequest::POST)
+    {
+      $blob_object->putBlob($request->getParameter('container'), $request->getParameter('blobname'), $_FILES['blobfile']['tmp_name']);
+
+      $template = $twig->loadTemplate('createblob-success.tmpl');
+
+      $content = $template->render(array('container' => $request->getParameter('container'), 'blobname' => $request->getParameter('blobname')));
+    }
+    else
+    {
+      $template = $twig->loadTemplate('createblob.tmpl');
+
+      $content = $template->render(array('container' => $request->getParameter('container')));
+    }
+
+    return $content;
+  }
+
+  /**
+   * Get the blog object to be used
+   *
+   * @param array $config
    * @return Microsoft_WindowsAzure_Storage_Blob
    */
   protected function getBlobObject($config)

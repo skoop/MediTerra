@@ -1,0 +1,17 @@
+{{ blobcount }} blobs in this container <a href="/?controller=BlobController&action=createblob&container={{ container }}"><img src="/images/add.png" alt="add blob" /></a><br />
+<br />
+<table>
+  <tr>
+    <th>Blob</th>
+    <th>Content Type</th>
+  </tr>
+  {% for blob in blobs %}
+    <tr>
+      <td>{{ blob.name }}</td>
+      <td>{{ blob.contenttype }}</td>
+      <td><a href="/?controller=BlobController&action=blobdownload&container={{ container }}&blob={{ blob.name }}"><img src="/images/arrow_down.png" alt="download" /></a></td>
+      <td><a href="/?controller=BlobController&action=blobedit&container={{ container }}&blob={{ blob.name }}"><img src="/images/edit.png" alt="edit blob" /></a></td>
+      <td><form method="post" action="/?controller=BlobController&action=deleteblob"><input type="hidden" name="container" value="{{ container }}" /><input type="hidden" name="blob" value="{{ blob.name }}" /><input type="image" name="submit" value="Delete blob" src="/images/delete.png" /></form></td>
+    </tr>
+  {% endfor %}
+</table>
