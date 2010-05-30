@@ -41,11 +41,14 @@ require_once(dirname(__FILE__).'/../controllers/'.$controller_name.'.php');
 $controller = new $controller_name();
 $content = $controller->execute($dispatcher, $request, $config);
 
-// get the template path
-$template_file = MediTerraOutput::getTemplatePath($config['template']);
+if (!is_null($content))
+{
+  // get the template path
+  $template_file = MediTerraOutput::getTemplatePath($config['template']);
 
-// create response
-$response = new sfWebResponse($dispatcher);
-$response->setContent(MediTerraOutput::decorate($content, $template_file));
-// send response
-$response->send();
+  // create response
+  $response = new sfWebResponse($dispatcher);
+  $response->setContent(MediTerraOutput::decorate($content, $template_file));
+  // send response
+  $response->send();
+}
