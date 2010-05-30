@@ -16,3 +16,7 @@ For interfacing with Azure Storage, MediTerra uses the PHPAzure library (http://
 For request and response handling as well as event dispatching, MediTerra uses the libraries of symfony 1.4. These libraries are also released under the MIT license (like MediTerra) but a seperate lib/vendor/SYMFONY-LICENSE.txt has been included for clarity.
 
 For templating, MediTerra uses the Twig library (http://www.twig-project.org/). The license for Twig can be found in lib/vendor/TWIG-LICENSE.txt.
+
+Iconset
+=======
+The iconset used is the Famfamfam Silk iconset (http://www.famfamfam.com/lab/icons/silk/), which is available under the Creative Commons Attribution 2.5 License.
