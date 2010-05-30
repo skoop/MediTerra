@@ -150,7 +150,7 @@ class BlobController extends BaseController implements ControllerInterface
    * @param sfEventDispatcher $dispatcher
    * @param sfWebRequest $request
    * @param array $config
-   * @return
+   * @return null
    */
   public function executeBlobdownload(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
@@ -168,6 +168,45 @@ class BlobController extends BaseController implements ControllerInterface
     return null;
   }
 
+
+  /**
+   * Update the specified blob (delete existing, then add the new one)
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
+  public function executeBlobedit(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $blob_object = $this->getBlobObject($config);
+    $twig = $this->getTwig($config, 'blob');
+    
+    if ($request->getMethod() == sfWebRequest::POST)
+    {
+      $blob_object->deleteBlob($request->getParameter('container'), $request->getParameter('blob'));
+      $blob_object->putBlob($request->getParameter('container'), $request->getParameter('blob'), $_FILES['blobfile']['tmp_name']);
+
+      $template = $twig->loadTemplate('editblob-success.tmpl');
+      $content = $template->render(array('blob' => $request->getParameter('blob'), 'container' => $request->getParameter('container')));
+    }
+    else
+    {
+      $template = $twig->loadTemplate('editblob.tmpl');
+      $content = $template->render(array('blob' => $request->getParameter('blob'), 'container' => $request->getParameter('container')));
+    }
+
+    return $content;
+  }
+
+  /**
+   * Delete the specified blob
+   *
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
   public function executeDeleteblob(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
     $blob_object = $this->getBlobObject($config);

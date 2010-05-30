@@ -1,0 +1,6 @@
+<form method="post" action="/?controller=BlobController&action=blobedit" enctype="multipart/form-data">
+<input type="hidden" name="container" value="{{ container }}" />
+<input type="hidden" name="blob" value="{{ blob }}" />
+Blob: <input type="file" name="blobfile" /><br />
+<input type="submit" name="submit" value="Replace blob" />
+</table>
