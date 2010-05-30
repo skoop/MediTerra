@@ -8,7 +8,7 @@
     <tr>
       <td>{{ table.name }}</td>
       <td><a href="/?controller=TableController&action=entitylist&table={{ table.name }}">List entities</a></td>
-      <td><form method="post" action="/?controller=TableController&action=delete"><input type="hidden" name="table" value="{{ table.name }}" /><input type="submit" name="submit" value="Delete table" /></form></td>
+      <td><form method="post" action="/?controller=TableController&action=delete"><input type="hidden" name="table" value="{{ table.name }}" /><input type="image" name="submit" value="Delete table" src="/images/delete.png" /></form></td>
     </tr>
   {% endfor %}
 </table>

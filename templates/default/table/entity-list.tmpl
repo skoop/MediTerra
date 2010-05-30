@@ -11,7 +11,7 @@
       <td>{{ entity.timestamp }}</td>
       <td>{{ entity.partitionid }}</td>
       <td>{{ entity.rowid }}</td>
-      <td><form method="post" action="/?controller=TableController&action=entitydelete"><input type="hidden" name="table" value="{{ table }}" /><input type="hidden" name="partition" value="{{ entity.partitionid }}" /><input type="hidden" name="row" value="{{ entity.rowid }}" /><input type="submit" name="submit" value="Delete entity" /></form></td>
+      <td><form method="post" action="/?controller=TableController&action=entitydelete"><input type="hidden" name="table" value="{{ table }}" /><input type="hidden" name="partition" value="{{ entity.partitionid }}" /><input type="hidden" name="row" value="{{ entity.rowid }}" /><input type="image" name="submit" value="Delete entity" src="/images/delete.png" /></form></td>
     </tr>
   {% endfor %}
 </table>

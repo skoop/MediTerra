@@ -1,4 +1,4 @@
-{{ containercount }} containers currently present (<a href="/?controller=BlobController&action=createcontainer">create container</a>)<br />
+{{ containercount }} containers currently present <a href="/?controller=BlobController&action=createcontainer"><img src="/images/add.png" alt="create container" /></a><br />
 <br />
 <table>
   <tr>
@@ -8,7 +8,7 @@
     <tr>
       <td>{{ container.name }}</td>
       <td><a href="/?controller=BlobController&action=bloblist&container={{ container.name }}">List blobs</a></td>
-      <td><form method="post" action="/?controller=BlobController&action=deletecontainer"><input type="hidden" name="container" value="{{ container.name }}" /><input type="submit" name="submit" value="Delete container" /></form></td>
+      <td><form method="post" action="/?controller=BlobController&action=deletecontainer"><input type="hidden" name="container" value="{{ container.name }}" /><input type="image" name="submit" value="Delete container" src="/images/delete.png" /></form></td>
     </tr>
   {% endfor %}
 </table>
