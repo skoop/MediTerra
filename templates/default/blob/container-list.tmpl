@@ -2,12 +2,15 @@
 <br />
 <table>
   <tr>
+    <th>&nbsp;</th>
     <th>Container</th>
   </tr>
   {% for container in containers %}
     <tr>
+      <td><img src="/images/lock{{ container.lockstatus }}.png" alt=""></td>
       <td>{{ container.name }}</td>
       <td><a href="/?controller=BlobController&action=bloblist&container={{ container.name }}">List blobs</a></td>
+      <td><a href="/?controller=BlobController&action={{ container.lockaction }}&container={{ container.name }}"><img src="/images/lock{{ container.lockimage }}.png" alt=""></a></td>
       <td><form method="post" action="/?controller=BlobController&action=deletecontainer"><input type="hidden" name="container" value="{{ container.name }}" /><input type="image" name="submit" value="Delete container" src="/images/delete.png" /></form></td>
     </tr>
   {% endfor %}

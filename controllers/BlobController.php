@@ -25,10 +25,46 @@ class BlobController extends BaseController implements ControllerInterface
     $containers = array();
     foreach($blob_containers as $container)
     {
-      $containers[] = array('name' => $container->Name);
+      if ($blob_object->getContainerAcl($container->Name))
+      {
+        $lockstatus = '_open';
+        $lockaction = 'containerlock';
+        $lockimage = '_add';
+      }
+      else
+      {
+        $lockstatus = '';
+        $lockaction = 'containerunlock';
+        $lockimage = '_delete';
+      }
+      $containers[] = array('name' => $container->Name, 'lockstatus' => $lockstatus, 'lockaction' => $lockaction, 'lockimage' => $lockimage);
     }
 
     return $template->render(array('containercount' => count($containers), 'containers' => $containers));
+  }
+
+  public function executeContainerlock(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $blob_object = $this->getBlobObject($config);
+
+    $twig = $this->getTwig($config, 'blob');
+    $template = $twig->loadTemplate('containerlock-success.tmpl');
+
+    $blob_object->setContainerAcl($request->getParameter('container'), Microsoft_WindowsAzure_Storage_Blob::ACL_PRIVATE);
+
+    return $template->render(array('container' => $request->getParameter('container')));
+  }
+
+  public function executeContainerUnlock(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
+  {
+    $blob_object = $this->getBlobObject($config);
+
+    $twig = $this->getTwig($config, 'blob');
+    $template = $twig->loadTemplate('containerunlock-success.tmpl');
+
+    $blob_object->setContainerAcl($request->getParameter('container'), Microsoft_WindowsAzure_Storage_Blob::ACL_PUBLIC);
+
+    return $template->render(array('container' => $request->getParameter('container')));
   }
 
   /**
