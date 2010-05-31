@@ -164,11 +164,18 @@ class BlobController extends BaseController implements ControllerInterface
 
     if ($request->getMethod() == sfWebRequest::POST)
     {
-      $blob_object->putBlob($request->getParameter('container'), $_FILES['blobfile']['name'], $_FILES['blobfile']['tmp_name']);
+      if (isset($_FILES['blobfile']) && isset($_FILES['blobfile']['tmp_file']))
+      {
+        $blob_object->putBlob($request->getParameter('container'), $_FILES['blobfile']['name'], $_FILES['blobfile']['tmp_name']);
 
-      $template = $twig->loadTemplate('createblob-success.tmpl');
-
-      $content = $template->render(array('container' => $request->getParameter('container'), 'blobname' => $request->getParameter('blobname')));
+        $template = $twig->loadTemplate('createblob-success.tmpl');
+        $content = $template->render(array('container' => $request->getParameter('container'), 'blobname' => $request->getParameter('blobname')));
+      }
+      else
+      {
+        $template = $twig->loadTemplate('error.tmpl');
+        $content = $template->render(array('error' => 'No file selected'));
+      }
     }
     else
     {
@@ -192,16 +199,26 @@ class BlobController extends BaseController implements ControllerInterface
   {
     $blob_object = $this->getBlobObject($config);
 
-    $tmpfile = tempnam(sys_get_temp_dir(), 'MTD_');
-    $blob_object->getBlob($request->getParameter('container'), $request->getParameter('blob'), $tmpfile);
+    if ($blob_object->blobExists($request->getParameter('container'), $request->getParameter('blob')))
+    {
+      $tmpfile = tempnam(sys_get_temp_dir(), 'MTD_');
+      $blob_object->getBlob($request->getParameter('container'), $request->getParameter('blob'), $tmpfile);
 
-    header('Content-Disposition: attachment; filename='.$request->getParameter('blob'));
-    header('Content-Type: application/octet-stream');
+      header('Content-Disposition: attachment; filename='.$request->getParameter('blob'));
+      header('Content-Type: application/octet-stream');
 
-    readfile($tmpfile);
-    unlink($tmpfile);
-    
-    return null;
+      readfile($tmpfile);
+      unlink($tmpfile);
+
+      return null;
+    }
+    else
+    {
+      $twig = $this->getTwig($config, 'blob');
+      $template = $twig->loadTemplate('error.tmpl');
+
+      return $template->render(array('error' => 'No such blob in Azure storage'));
+    }
   }
 
 
@@ -220,11 +237,19 @@ class BlobController extends BaseController implements ControllerInterface
     
     if ($request->getMethod() == sfWebRequest::POST)
     {
-      $blob_object->deleteBlob($request->getParameter('container'), $request->getParameter('blob'));
-      $blob_object->putBlob($request->getParameter('container'), $request->getParameter('blob'), $_FILES['blobfile']['tmp_name']);
+      if (isset($_FILES['blobfile']) && isset($_FILES['blobfile']['tmp_file']))
+      {
+        $blob_object->deleteBlob($request->getParameter('container'), $request->getParameter('blob'));
+        $blob_object->putBlob($request->getParameter('container'), $request->getParameter('blob'), $_FILES['blobfile']['tmp_name']);
 
-      $template = $twig->loadTemplate('editblob-success.tmpl');
-      $content = $template->render(array('blob' => $request->getParameter('blob'), 'container' => $request->getParameter('container')));
+        $template = $twig->loadTemplate('editblob-success.tmpl');
+        $content = $template->render(array('blob' => $request->getParameter('blob'), 'container' => $request->getParameter('container')));
+      }
+      else
+      {
+        $template = $twig->loadTemplate('error.tmpl');
+        $content = $template->render(array('error' => 'No file was selected'));
+      }
     }
     else
     {
