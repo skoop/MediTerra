@@ -180,7 +180,7 @@ class BlobController extends BaseController implements ControllerInterface
 
     if ($request->getMethod() == sfWebRequest::POST)
     {
-      if (isset($_FILES['blobfile']) && isset($_FILES['blobfile']['tmp_file']))
+      if (isset($_FILES['blobfile']) && isset($_FILES['blobfile']['tmp_name']))
       {
         $blob_object->putBlob($request->getParameter('container'), $_FILES['blobfile']['name'], $_FILES['blobfile']['tmp_name']);
 
