@@ -43,6 +43,14 @@ class BlobController extends BaseController implements ControllerInterface
     return $template->render(array('containercount' => count($containers), 'containers' => $containers));
   }
 
+  /**
+   * Lock a container
+   * 
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
   public function executeContainerlock(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
     $blob_object = $this->getBlobObject($config);
@@ -55,6 +63,14 @@ class BlobController extends BaseController implements ControllerInterface
     return $template->render(array('container' => $request->getParameter('container')));
   }
 
+  /**
+   * Unlock a container
+   * 
+   * @param sfEventDispatcher $dispatcher
+   * @param sfWebRequest $request
+   * @param array $config
+   * @return string
+   */
   public function executeContainerUnlock(sfEventDispatcher $dispatcher, sfWebRequest $request, $config)
   {
     $blob_object = $this->getBlobObject($config);
